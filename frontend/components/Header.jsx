@@ -15,7 +15,7 @@ export function Header({ activeTab, setActiveTab }) {
         <button className="menu-toggle" onClick={() => setMenuOpen((open) => !open)} aria-expanded={menuOpen} aria-label={menuOpen ? 'Fechar navegação' : 'Abrir navegação'}><span /><span /><span /></button>
         <nav className={`nav-buttons ${menuOpen ? 'is-open' : ''}`} aria-label="Navegação principal">
           {links.map((link) => <button key={link.id} onClick={() => navigate(link.id)} className={`nav-btn ${activeTab === link.id ? 'active' : ''}`}>{link.label}</button>)}
-          <button onClick={() => navigate('profile')} className={`nav-btn nav-profile ${activeTab === 'profile' ? 'active' : ''}`} aria-label="Abrir perfil"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.5-3.4 3.2-5.5 7-5.5s6.5 2.1 7 5.5"/></svg><span>Perfil</span></button>
+          <button onClick={() => navigate('access')} className={`nav-btn nav-access ${activeTab === 'access' || activeTab === 'serverPortal' ? 'active' : ''}`}><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.5-3.4 3.2-5.5 7-5.5s6.5 2.1 7 5.5"/></svg><span>Acesso</span></button>
           <button onClick={() => navigate('new')} className="nav-action"><span>＋</span> Registrar demanda</button>
         </nav>
       </div>

@@ -10,7 +10,9 @@ Como integrar e priorizar as demandas de serviços públicos de Arcoverde para m
 
 O Arcoverde Conecta reúne as solicitações em um painel único para apoiar o registro, o encaminhamento e o acompanhamento dos serviços. A interface apresenta indicadores, permite pesquisar e filtrar solicitações e mostra informações de localização, categoria, urgência, situação, responsável e prazo. Também inclui uma apresentação do projeto e uma explicação visual de como o atendimento pode funcionar.
 
-O protótipo usa dados de demonstração e armazenamento local do navegador (`localStorage`). Ele não está conectado a uma API ou banco de dados compartilhado; as alterações ficam no navegador em que foram feitas.
+O protótipo também apresenta opções de acesso para cidadãos (entrar e criar cadastro), uma tela de entrada para servidores e um portal demonstrativo de gestão. No portal do servidor, é possível consultar e filtrar a fila; ao abrir uma solicitação, a equipe pode alterar o setor, responsável, prazo, situação e histórico.
+
+O protótipo usa dados de demonstração e armazenamento local do navegador (`localStorage`). Ele não está conectado a uma API ou banco de dados compartilhado. As telas de login são demonstrativas: não validam contas e não armazenam senhas. As alterações nas solicitações ficam no navegador em que foram feitas.
 
 ## Tecnologias
 

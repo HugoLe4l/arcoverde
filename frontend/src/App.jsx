@@ -5,7 +5,8 @@ import { DemandsList } from '../components/DemandsList.jsx';
 import { DemandForm } from '../components/DemandForm.jsx';
 import { DemandDetails } from '../components/DemandDetails.jsx';
 import { Footer } from '../components/Footer.jsx';
-import { Profile } from '../pages/Profile.jsx';
+import { AccessPortal } from '../pages/AccessPortal.jsx';
+import { StaffPortal } from '../pages/StaffPortal.jsx';
 
 const STORAGE_KEY = 'arcoverde-conecta-demands-v2';
 const now = Date.now();
@@ -76,7 +77,8 @@ export default function App() {
         {activeTab === 'home' && <Home demands={demands} metrics={metrics} onOpenDemand={setSelectedId} onNavigate={setActiveTab} />}
         {activeTab === 'demands' && <DemandsList demands={demands} onOpenDemand={setSelectedId} onAdd={() => setActiveTab('new')} />}
         {activeTab === 'new' && <DemandForm onAddDemand={createDemand} onCancel={() => setActiveTab('home')} />}
-        {activeTab === 'profile' && <Profile />}
+        {activeTab === 'access' && <AccessPortal onNavigate={setActiveTab} onServerLogin={() => setActiveTab('serverPortal')} />}
+        {activeTab === 'serverPortal' && <StaffPortal demands={demands} onNavigate={setActiveTab} onOpenDemand={setSelectedId} />}
       </main>
       <Footer />
       {selectedDemand && <DemandDetails demand={selectedDemand} onClose={() => setSelectedId(null)} onUpdate={updateDemand} />}
