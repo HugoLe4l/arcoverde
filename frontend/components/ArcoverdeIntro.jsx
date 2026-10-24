@@ -54,7 +54,7 @@ export function ArcoverdeIntro({ onNavigate }) {
         <h2 id="city-title">Uma cidade forte também se constrói com serviços mais próximos.</h2>
         <p>A Prefeitura de Arcoverde coordena serviços que fazem parte do cotidiano da população, como iluminação, limpeza urbana e manutenção das vias. Para que cada necessidade receba atenção, é importante ter informações organizadas e acompanhar os encaminhamentos.</p>
         <p><strong>Arcoverde Conecta</strong> é uma proposta de interface para reunir solicitações, visualizar demandas por bairro e acompanhar sua situação. A ideia é apoiar uma comunicação mais clara entre população e equipes públicas.</p>
-        <div className="intro-note"><span aria-hidden="true">i</span><p>Este é um protótipo acadêmico independente, não um canal oficial da Prefeitura. Os registros desta demonstração ficam salvos somente neste navegador.</p></div>
+        <div className="intro-note"><span aria-hidden="true">i</span><p>Projeto acadêmico integrado a uma API local. Para atendimento oficial, consulte os canais da Prefeitura de Arcoverde.</p></div>
         <button className="intro-cta" onClick={() => onNavigate('new')}>Registrar uma solicitação <span aria-hidden="true">→</span></button>
       </div>
 
