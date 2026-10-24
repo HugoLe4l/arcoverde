@@ -244,6 +244,7 @@ def init_db():
                                         titulo VARCHAR(255) NOT NULL,
                                         categoria VARCHAR(100) NOT NULL,
                                         bairro VARCHAR(100) NOT NULL,
+                                        cep VARCHAR(8) NOT NULL,
                                         rua VARCHAR(150) NOT NULL,
                                         latitude DOUBLE PRECISION,
                                         longitude DOUBLE PRECISION,

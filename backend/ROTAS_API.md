@@ -58,6 +58,15 @@ no login correspondente.
 
 - **Erro de credenciais:** `401 Unauthorized`.
 
+### Validar sessão do cidadão autenticado
+
+- **Método e rota:** `GET /cidadao/me`
+- **Autenticação:** token de cidadão.
+- **Corpo:** nenhum.
+- **Sucesso:** `200 OK`, com o ID, nome e tipo de usuário presentes no token.
+- **Erros comuns:** `401` sem token válido; `403` para token de outro tipo
+  de usuário.
+
 ### Criar solicitação
 
 - **Método e rota:** `POST /cidadao/criar-solicitacao`
@@ -69,6 +78,7 @@ no login correspondente.
   "titulo": "Buraco na rua",
   "categoria_id": 1,
   "bairro": "Centro",
+  "cep": "56506-000",
   "rua": "Rua das Flores",
   "descricao": "Buraco próximo à praça"
 }
@@ -82,6 +92,7 @@ no login correspondente.
   "titulo": "Buraco na rua",
   "categoria_id": 1,
   "bairro": "Centro",
+  "cep": "56506-000",
   "rua": "Rua das Flores",
   "descricao": "Buraco próximo à praça",
   "latitude": -8.4192,
@@ -91,6 +102,11 @@ no login correspondente.
 
 - **Importante:** use o ID retornado por `GET /categoria/todos`. O cidadão
   não informa o órgão responsável; esse campo é definido por um servidor.
+- O CEP é obrigatório e deve conter oito números. Pode ser enviado com ou sem
+  hífen; o backend o armazena somente com números.
+- A definição da coluna `cep` está no `CREATE TABLE` da inicialização. Bancos
+  criados anteriormente não recebem essa coluna automaticamente; para usar o
+  novo campo sem executar `ALTER TABLE`, recrie a tabela/banco existente.
 - **Sucesso:** `201 Created`.
 - **Erros comuns:** `400` para campos ausentes, categoria inexistente, tipo
   de categoria incorreto ou coordenadas inválidas; `401` sem token válido;

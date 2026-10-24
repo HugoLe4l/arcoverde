@@ -1,5 +1,10 @@
 from flask import Blueprint
-from controllers.cidadao_controller import register_controller, login_controller, criar_solicitacao_controller
+from controllers.cidadao_controller import (
+    register_controller,
+    login_controller,
+    dados_cidadao_controller,
+    criar_solicitacao_controller
+)
 from utils.jwt import validar_token
 
 cidadoes_routes = Blueprint("cidadoes", __name__)
@@ -11,6 +16,11 @@ def Register():
 @cidadoes_routes.route('/cidadao/login', methods=['POST'])
 def Login():
     return login_controller()
+
+@cidadoes_routes.route('/cidadao/me', methods=['GET'])
+@validar_token('cidadao')
+def Dados_Cidadao():
+    return dados_cidadao_controller()
 
 @cidadoes_routes.route('/cidadao/criar-solicitacao', methods=['POST'])
 @validar_token('cidadao')

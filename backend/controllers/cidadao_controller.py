@@ -1,4 +1,5 @@
 import math
+import re
 from flask import request, jsonify
 from services.cidadao_service import create_cidadao_service, login_cidadao_service, create_solicitacao_service
 
@@ -70,6 +71,16 @@ def login_controller():
                         'message': 'Houve um error durante o login.'
                         }), 500
 
+def dados_cidadao_controller():
+     return jsonify({
+          'success': True,
+          'data': {
+               'id': request.user['ID_USER'],
+               'nome': request.user['USERNAME'],
+               'tipo_usuario': request.user['TIPO_USUARIO']
+          }
+     }), 200
+
 def criar_solicitacao_controller():
      try:
           data = request.json
@@ -84,16 +95,25 @@ def criar_solicitacao_controller():
           TITULO = data.get("titulo")
           ID_CATEGORIA = data.get("categoria_id")
           BAIRRO = data.get("bairro")
+          CEP = data.get("cep")
           RUA = data.get("rua")
           DESCRICAO = data.get("descricao")
           LATITUDE = data.get("latitude")
           LONGITUDE = data.get("longitude")
 
-          if not all([ID_SOLICITANTE, TITULO, ID_CATEGORIA, BAIRRO, RUA, DESCRICAO]):
+          if not all([ID_SOLICITANTE, TITULO, ID_CATEGORIA, BAIRRO, CEP, RUA, DESCRICAO]):
                     return jsonify({
                          'success': False,
                          'message': 'Há campos vazios.'
                     }), 400
+
+          if not isinstance(CEP, str) or not re.fullmatch(r'\d{5}-?\d{3}', CEP):
+                    return jsonify({
+                         'success': False,
+                         'message': 'O CEP deve conter oito números.'
+                    }), 400
+
+          CEP = CEP.replace('-', '')
 
           if not isinstance(ID_CATEGORIA, int) or isinstance(ID_CATEGORIA, bool):
                     return jsonify({
@@ -129,6 +149,7 @@ def criar_solicitacao_controller():
                TITULO,
                ID_CATEGORIA,
                BAIRRO,
+               CEP,
                RUA,
                DESCRICAO,
                LATITUDE,

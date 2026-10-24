@@ -97,6 +97,7 @@ def create_solicitacao(
     TITULO,
     ID_CATEGORIA,
     BAIRRO,
+    CEP,
     RUA,
     DESCRICAO,
     LATITUDE=None,
@@ -117,12 +118,13 @@ def create_solicitacao(
                     titulo,
                     categoria,
                     bairro,
+                    cep,
                     rua,
                     latitude,
                     longitude,
                     descricao
                 )
-                SELECT %s, %s, pk_id_categoria, %s, nome, %s, %s, %s, %s, %s
+                SELECT %s, %s, pk_id_categoria, %s, nome, %s, %s, %s, %s, %s, %s
                 FROM {TabelasBancoDeDados.CATEGORIAS.value}
                 WHERE pk_id_categoria = %s
                 RETURNING pk_id_solicitacao
@@ -133,6 +135,7 @@ def create_solicitacao(
                 ID_SOLICITANTE,
                 TITULO,
                 BAIRRO,
+                CEP,
                 RUA,
                 LATITUDE,
                 LONGITUDE,

@@ -1,63 +1,102 @@
 # Arcoverde Conecta
 
-Aplicação acadêmica para registrar e acompanhar solicitações de serviços públicos de Arcoverde, Pernambuco. O projeto contém uma interface React e uma API Flask integrada a PostgreSQL.
+Aplicação acadêmica para registrar e acompanhar solicitações de serviços
+públicos de Arcoverde, Pernambuco. O projeto reúne uma interface React, uma API
+Flask e um banco de dados PostgreSQL.
 
-## Problema escolhido
+## Sobre o projeto
 
-Solicitações públicas recebidas por canais diferentes são difíceis de acompanhar e priorizar sem uma visão compartilhada entre população e equipes municipais.
+Solicitações públicas recebidas por diferentes canais podem ser difíceis de
+acompanhar e priorizar. O Arcoverde Conecta reúne o registro das demandas e a
+fila de atendimento em uma plataforma compartilhada entre cidadãos e equipes
+municipais.
 
-## Solução proposta
+### Funcionalidades
 
-O Arcoverde Conecta reúne o registro de solicitações e a fila de atendimento. Cidadãos podem criar uma conta e enviar demandas; servidores autenticados podem consultar a fila, alterar situação e urgência, encaminhar para órgãos associados e registrar atualizações no histórico.
+- Consulta de solicitações e categorias disponíveis na API.
+- Cadastro e autenticação de cidadãos com CPF e senha.
+- Autenticação de servidores com matrícula e senha.
+- Registro de solicitações por cidadãos autenticados.
+- Mapa com solicitações abertas que possuem coordenadas.
+- Portal do servidor para consultar e atualizar situação e urgência, encaminhar
+  solicitações a órgãos responsáveis e registrar providências no histórico.
+- Central do gestor para cadastrar atendentes e consultar servidores; usuários
+  Admin também podem promover atendentes a Gestor.
+
+### Limitações conhecidas
+
+- A API atual não aceita anexos de imagem, prazos ou atribuição de um servidor
+  individual.
+- A API não oferece uma rota para filtrar solicitações pelo cidadão autenticado;
+  por isso, a lista exibida depende dos dados retornados pela API.
 
 ## Requisitos
 
-- Node.js e npm
-- Python 3.10 ou superior
-- PostgreSQL em execução
+- Python 3.10 ou superior.
+- Node.js e npm.
+- PostgreSQL em execução.
 
-## Executar o backend
+## Configuração e execução
 
-No terminal, na pasta `backend`, crie e ative um ambiente virtual, instale as dependências e inicie a API:
+Inicie primeiro o PostgreSQL e configure os dados de conexão usados pelo
+backend em `backend/config/database.py`. Não compartilhe nem envie credenciais
+reais ao repositório.
 
-```bash
+### Backend
+
+No PowerShell, a partir da pasta raiz do projeto:
+
+```powershell
+cd backend
 python -m venv .venv
-# Windows PowerShell
-.venv\Scripts\Activate.ps1
+.\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 python main.py
 ```
 
-O backend inicializa o banco PostgreSQL e as tabelas. Configure a conexão com o PostgreSQL em `backend/config/database.py` conforme o ambiente local. Na primeira execução, o terminal poderá solicitar os dados para criar a conta Admin inicial.
+Na primeira inicialização, a API cria o banco e as tabelas. Se ainda não
+houver um administrador cadastrado, o terminal solicitará matrícula, nome e
+senha para criar a conta Admin inicial.
 
 A API fica disponível em `http://localhost:5000`.
 
-## Executar o frontend
+### Frontend
 
-Em outro terminal, na pasta `frontend`:
+Abra outro terminal na pasta raiz do projeto:
 
-```bash
+```powershell
+cd frontend
 npm install
-Copy-Item .env.example .env
 npm run dev
 ```
 
-O arquivo `.env` usa `VITE_API_BASE_URL=http://localhost:5000`. Ajuste o endereço se a API estiver em outro host. Abra no navegador o endereço que o Vite mostrar, normalmente `http://localhost:5173`.
+O frontend usa `http://localhost:5000` como endereço da API. Se ela estiver em
+outro endereço, altere a constante `API_BASE_URL` em
+`frontend/src/services/api.js`. Abra no navegador a URL informada pelo Vite,
+normalmente `http://localhost:5173`.
 
-## Funcionalidades ligadas à API
+## Comandos do frontend
 
-- Consulta de categorias e solicitações.
-- Cadastro e login de cidadãos com CPF e senha.
-- Login de servidor com matrícula e senha.
-- Cadastro de solicitação pelo cidadão autenticado.
-- Portal de gestão com atualização de situação, urgência, órgão responsável e histórico.
+Execute-os dentro da pasta `frontend`:
 
-O backend atual não aceita anexos de imagem, prazos ou atribuição de servidor individual. A tela foi alinhada aos campos disponíveis na API. O painel apresenta a fila retornada pelo backend; a API documentada ainda não fornece uma rota para filtrar as solicitações pelo cidadão autenticado.
+| Comando | Descrição |
+| --- | --- |
+| `npm run dev` | Inicia o servidor de desenvolvimento. |
+| `npm run build` | Gera a versão de produção em `frontend/dist`. |
+| `npm run preview` | Pré-visualiza a versão de produção. |
+| `npm run lint` | Executa o ESLint. |
+| `npm run format` | Formata os arquivos do frontend. |
+| `npm run format:check` | Verifica a formatação sem alterar arquivos. |
 
-## Estrutura
+## Documentação da API
+
+Consulte [`backend/ROTAS_API.md`](backend/ROTAS_API.md) para ver as rotas,
+parâmetros e exemplos de requisições.
+
+## Estrutura do projeto
 
 ```text
 backend/   API Flask, modelos, rotas e inicialização do PostgreSQL
-frontend/  interface React e cliente da API
-README.md  instruções do projeto
+frontend/  Interface React e cliente da API
+README.md  Documentação e instruções para executar o projeto
 ```
