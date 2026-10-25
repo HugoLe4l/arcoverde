@@ -443,6 +443,59 @@
   color: #8a9a90;
   font-size: 11px;
 }
+.staff-org-overview {
+  margin: 0 0 28px;
+}
+.staff-org-overview-heading {
+  margin-bottom: 12px;
+}
+.staff-org-overview-heading h2 {
+  margin: 5px 0 3px;
+  color: #244a36;
+  font: 750 18px Manrope;
+}
+.staff-org-overview-heading p {
+  margin: 0;
+  color: #72857a;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.staff-org-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 11px;
+}
+.staff-org-card {
+  display: flex;
+  min-height: 112px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 16px 18px;
+  border: 1px solid #e3ebe5;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 4px 12px #183b3509;
+}
+.staff-org-card span {
+  color: #6f8276;
+  font-size: 12px;
+  font-weight: 600;
+}
+.staff-org-card b {
+  margin: 6px 0 3px;
+  color: #1f5036;
+  font: 800 30px Manrope;
+}
+.staff-org-card small,
+.staff-org-overview-message {
+  color: #8a9a90;
+  font-size: 11px;
+}
+.staff-org-overview-error {
+  color: #a33a35;
+  font-size: 12px;
+}
 .staff-overview-note {
   padding: 22px 24px;
 }
@@ -669,6 +722,23 @@
     font-size: 28px;
   }
   .staff-overview article small {
+    font-size: 10px;
+  }
+  .staff-org-overview-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .staff-org-card {
+    min-height: 96px;
+    padding: 13px;
+  }
+  .staff-org-card span {
+    font-size: 11px;
+  }
+  .staff-org-card b {
+    font-size: 26px;
+  }
+  .staff-org-card small {
     font-size: 10px;
   }
   .staff-queue-heading {

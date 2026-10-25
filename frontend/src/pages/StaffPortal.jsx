@@ -1,6 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ListaSolicitacoes } from '../components/DemandsList.jsx';
-import { cadastrar_servidor, listar_servidores, promover_servidor } from '../services/api.js';
+import {
+  cadastrar_servidor,
+  listar_orgaos,
+  listar_servidores,
+  promover_servidor,
+} from '../services/api.js';
 import './AccessPortal.css';
 
 export function PortalServidor({ demands, ao_navegar, ao_abrir_solicitacao, servidor, token }) {
@@ -14,9 +19,51 @@ export function PortalServidor({ demands, ao_navegar, ao_abrir_solicitacao, serv
   const [servidores, set_servidores] = useState([]);
   const [servidores_carregando, set_servidores_carregando] = useState(false);
   const [erro_lista_servidores, set_erro_lista_servidores] = useState('');
+  const [orgaos, set_orgaos] = useState([]);
+  const [orgaos_carregando, set_orgaos_carregando] = useState(true);
+  const [erro_orgaos, set_erro_orgaos] = useState('');
   const pode_cadastrar_servidor = ['Admin', 'Gestor'].includes(servidor?.role);
   const active = demands.filter((demand) => demand.status !== 'Concluída');
-  const urgent = active.filter((demand) => demand.urgency === 'Alta');
+  const abertas = demands.filter(
+    (demand) => demand.status === 'Pendente' || demand.status === 'Aguardando equipe',
+  );
+  const em_andamento = demands.filter((demand) => demand.status === 'Em andamento');
+  const orgaos_com_encaminhamentos = new Set(
+    active.map((demand) => demand.orgId).filter((orgao_id) => orgao_id != null),
+  );
+  const contagens_por_orgao = useMemo(
+    () =>
+      demands.reduce((contagens, demand) => {
+        if (demand.status === 'Concluída' || demand.orgId == null) return contagens;
+        const orgao_id = String(demand.orgId);
+        contagens.set(orgao_id, (contagens.get(orgao_id) || 0) + 1);
+        return contagens;
+      }, new Map()),
+    [demands],
+  );
+
+  useEffect(() => {
+    let ativo = true;
+
+    async function carregar_orgaos() {
+      try {
+        const resposta = await listar_orgaos();
+        if (!Array.isArray(resposta.data)) {
+          throw new Error('A API retornou uma lista de órgãos inválida.');
+        }
+        if (ativo) set_orgaos(resposta.data);
+      } catch (error) {
+        if (ativo) set_erro_orgaos(error.message);
+      } finally {
+        if (ativo) set_orgaos_carregando(false);
+      }
+    }
+
+    carregar_orgaos();
+    return () => {
+      ativo = false;
+    };
+  }, []);
 
   async function carregar_servidores() {
     set_servidores_carregando(true);
@@ -149,30 +196,53 @@ export function PortalServidor({ demands, ao_navegar, ao_abrir_solicitacao, serv
               </header>
               <section className="staff-overview" aria-label="Resumo da fila de atendimento">
                 <article>
-                  <span>Solicitações em aberto</span>
-                  <b>{active.length}</b>
-                  <small>aguardando conclusão</small>
+                  <span>Solicitações abertas</span>
+                  <b>{abertas.length}</b>
+                  <small>aguardando atendimento</small>
                 </article>
                 <article>
-                  <span>Alta urgência</span>
-                  <b>{urgent.length}</b>
-                  <small>prioridade de análise</small>
+                  <span>Em andamento</span>
+                  <b>{em_andamento.length}</b>
+                  <small>em atendimento</small>
                 </article>
                 <article>
-                  <span>Órgãos responsáveis</span>
-                  <b>
-                    {
-                      new Set(demands.map((d) => d.sector).filter((x) => x && x !== 'A definir'))
-                        .size
-                    }
-                  </b>
-                  <small>com encaminhamentos</small>
+                  <span>Órgãos com encaminhamentos</span>
+                  <b>{orgaos_com_encaminhamentos.size}</b>
+                  <small>com solicitações não concluídas</small>
                 </article>
                 <article>
                   <span>Concluídas</span>
                   <b>{demands.length - active.length}</b>
                   <small>atendimentos finalizados</small>
                 </article>
+              </section>
+              <section className="staff-org-overview" aria-labelledby="staff-org-overview-title">
+                <div className="staff-org-overview-heading">
+                  <div>
+                    <span className="eyebrow">DISTRIBUIÇÃO DA FILA</span>
+                    <h2 id="staff-org-overview-title">Solicitações por órgão</h2>
+                    <p>Solicitações atribuídas que ainda não foram concluídas.</p>
+                  </div>
+                </div>
+                {orgaos_carregando ? (
+                  <p className="staff-org-overview-message">Carregando órgãos…</p>
+                ) : erro_orgaos ? (
+                  <p className="staff-org-overview-error" role="alert">
+                    Não foi possível carregar os órgãos: {erro_orgaos}
+                  </p>
+                ) : orgaos.length === 0 ? (
+                  <p className="staff-org-overview-message">Nenhum órgão cadastrado.</p>
+                ) : (
+                  <div className="staff-org-overview-grid">
+                    {orgaos.map((orgao) => (
+                      <article className="staff-org-card" key={orgao.pk_id_orgao}>
+                        <span>{orgao.nome}</span>
+                        <b>{contagens_por_orgao.get(String(orgao.pk_id_orgao)) || 0}</b>
+                        <small>não concluídas</small>
+                      </article>
+                    ))}
+                  </div>
+                )}
               </section>
               <section className="panel staff-overview-note">
                 <span className="eyebrow">CENTRAL DE ATENDIMENTO</span>
