@@ -68,19 +68,6 @@ outro endereço, altere a constante `API_BASE_URL` em
 `frontend/src/services/api.js`. Abra no navegador a URL informada pelo Vite,
 normalmente `http://localhost:5173`.
 
-## Comandos do frontend
-
-Execute-os dentro da pasta `frontend`:
-
-| Comando | Descrição |
-| --- | --- |
-| `npm run dev` | Inicia o servidor de desenvolvimento. |
-| `npm run build` | Gera a versão de produção em `frontend/dist`. |
-| `npm run preview` | Pré-visualiza a versão de produção. |
-| `npm run lint` | Executa o ESLint. |
-| `npm run format` | Formata os arquivos do frontend. |
-| `npm run format:check` | Verifica a formatação sem alterar arquivos. |
-
 ## Documentação da API
 
 Consulte [`backend/ROTAS_API.md`](backend/ROTAS_API.md) para ver as rotas,
