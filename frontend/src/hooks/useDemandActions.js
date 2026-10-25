@@ -42,10 +42,19 @@ export function useAcoesSolicitacao({
 
     try {
       await enviar_solicitacao(solicitacao, session.token);
-      await atualizar_solicitacoes();
-      definir_aba_ativa('demands');
     } catch (requestError) {
       setError(requestError.message);
+      return;
+    }
+
+    definir_aba_ativa('myDemands');
+
+    try {
+      await atualizar_solicitacoes();
+    } catch (requestError) {
+      setError(
+        `Solicitação criada, mas não foi possível atualizar a lista geral: ${requestError.message}`,
+      );
     }
   }
 

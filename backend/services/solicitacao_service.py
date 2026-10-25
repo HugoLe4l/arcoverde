@@ -1,5 +1,6 @@
 from models.solicitacao_modal import (
     listar_solicitacoes,
+    listar_solicitacoes_por_cidadao,
     buscar_solicitacao_pelo_id,
     buscar_solicitacao_pelo_Protocolo,
     atualizar_solicitacao_com_historico
@@ -20,6 +21,16 @@ def listar_solicitacoes_service():
         return {
             'success': False,
             'message': f'Houve um erro ao listar solicitacões: {erro}'
+        }
+
+def listar_solicitacoes_por_cidadao_service(ID_CIDADAO):
+    try:
+        return listar_solicitacoes_por_cidadao(ID_CIDADAO)
+    except Exception as erro:
+        traceback.print_exc()
+        return {
+            'success': False,
+            'message': f'Houve um erro ao listar as solicitações do cidadão: {erro}'
         }
 
 

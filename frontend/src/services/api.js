@@ -111,6 +111,10 @@ export async function listar_solicitacoes() {
   return fazer_requisicao('/solicitacao/listar-solicitacoes');
 }
 
+export async function listar_minhas_solicitacoes(token) {
+  return fazer_requisicao('/cidadao/minhas-solicitacoes', { token });
+}
+
 export async function obter_solicitacao_por_id(id) {
   return fazer_requisicao(`/solicitacao/${encodeURIComponent(id)}`);
 }

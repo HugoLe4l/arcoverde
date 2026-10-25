@@ -34,6 +34,41 @@ def listar_solicitacoes():
         cursor.close()
         conexao.close()
 
+def listar_solicitacoes_por_cidadao(ID_CIDADAO):
+    conexao, cursor = conectar()
+    if not conexao or not cursor:
+        return {
+            'success': False,
+            'message': 'Não foi possível conectar ao banco de dados.'
+        }
+
+    try:
+        cursor.execute(
+            f"""
+                SELECT *
+                FROM {TabelasBancoDeDados.SOLICITACOES.value}
+                WHERE fk_id_cidadao = %s
+                ORDER BY data_criacao DESC
+            """,
+            (ID_CIDADAO,)
+        )
+        resultado = cursor.fetchall()
+
+        return {
+            'success': True,
+            'message': 'Solicitações do cidadão encontradas.',
+            'resultado': resultado
+        }
+    except Error as erro:
+        conexao.rollback()
+        return {
+            'success': False,
+            'message': f'Houve um erro ao listar as solicitações do cidadão: {erro}'
+        }
+    finally:
+        cursor.close()
+        conexao.close()
+
 def buscar_solicitacao_pelo_id(ID_SOLICITACAO):
     conexao, cursor = conectar()
     if not conexao or not cursor:

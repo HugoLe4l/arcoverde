@@ -68,13 +68,6 @@ export function IntroducaoArcoverde({ ao_navegar }) {
           visualizar demandas por bairro e acompanhar sua situação. A ideia é apoiar uma comunicação
           mais clara entre população e equipes públicas.
         </p>
-        <div className="intro-note">
-          <span aria-hidden="true">i</span>
-          <p>
-            Projeto acadêmico integrado a uma API local. Para atendimento oficial, consulte os
-            canais da Prefeitura de Arcoverde.
-          </p>
-        </div>
         <button className="intro-cta" onClick={() => ao_navegar('new')}>
           Registrar uma solicitação <span aria-hidden="true">→</span>
         </button>

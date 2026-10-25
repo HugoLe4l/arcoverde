@@ -1,6 +1,11 @@
 import { useMemo, useState } from 'react';
 
-export function ListaSolicitacoes({ demands, ao_abrir_solicitacao, ao_iniciar_cadastro }) {
+export function ListaSolicitacoes({
+  demands,
+  ao_abrir_solicitacao,
+  ao_iniciar_cadastro,
+  minhas_demandas = false,
+}) {
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('Todas');
   const [category, setCategory] = useState('Todas');
@@ -28,9 +33,14 @@ export function ListaSolicitacoes({ demands, ao_abrir_solicitacao, ao_iniciar_ca
         <div>
           <span className="eyebrow">GESTÃO INTEGRADA · SERVIÇOS MUNICIPAIS</span>
           <h1>
-            Central de demandas<span className="heading-dot">.</span>
+            {minhas_demandas ? 'Minhas demandas' : 'Central de demandas'}
+            <span className="heading-dot">.</span>
           </h1>
-          <p>Consulte solicitações, acompanhe o histórico e ajude a organizar o atendimento.</p>
+          <p>
+            {minhas_demandas
+              ? 'Acompanhe a situação das solicitações que você registrou.'
+              : 'Consulte solicitações, acompanhe o histórico e ajude a organizar o atendimento.'}
+          </p>
         </div>
         <button className="button-primary" onClick={ao_iniciar_cadastro}>
           <span>＋</span> Registrar demanda
@@ -142,8 +152,16 @@ export function ListaSolicitacoes({ demands, ao_abrir_solicitacao, ao_iniciar_ca
           {filtered.length === 0 && (
             <div className="empty-queue">
               <span>⌕</span>
-              <b>Nenhuma demanda encontrada</b>
-              <p>Ajuste a busca ou os filtros para ver outras solicitações.</p>
+              <b>
+                {minhas_demandas && demands.length === 0
+                  ? 'Você ainda não registrou demandas'
+                  : 'Nenhuma demanda encontrada'}
+              </b>
+              <p>
+                {minhas_demandas && demands.length === 0
+                  ? 'Quando registrar uma solicitação, ela aparecerá nesta lista.'
+                  : 'Ajuste a busca ou os filtros para ver outras solicitações.'}
+              </p>
               <button
                 onClick={() => {
                   setSearch('');

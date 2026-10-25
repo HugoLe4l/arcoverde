@@ -27,6 +27,10 @@ export default function Aplicacao() {
     loading: dataLoading,
     error: dataError,
     atualizar_solicitacoes,
+    myDemands,
+    myDemandsLoading,
+    myDemandsError,
+    carregar_minhas_solicitacoes,
   } = useDadosPublicos();
   const {
     criar_solicitacao,
@@ -37,7 +41,7 @@ export default function Aplicacao() {
     categories,
     demands,
     atualizar_solicitacoes,
-    definir_aba_ativa: setActiveTab,
+    definir_aba_ativa: navegar_para_aba,
   });
 
   const metrics = useMemo(() => {
@@ -51,7 +55,9 @@ export default function Aplicacao() {
     };
   }, [demands]);
 
-  const selectedDemand = demands.find((demand) => demand.id === selectedId);
+  const selectedDemand =
+    demands.find((demand) => demand.id === selectedId) ||
+    myDemands.find((demand) => demand.id === selectedId);
   const error = actionError || sessionError || dataError;
 
   useEffect(() => {
@@ -72,6 +78,9 @@ export default function Aplicacao() {
   function navegar_para_aba(aba) {
     setSelectedId(null);
     setActiveTab(aba);
+    if (aba === 'myDemands' && session?.role === 'citizen') {
+      carregar_minhas_solicitacoes(session.token);
+    }
   }
 
   return (
@@ -122,6 +131,26 @@ export default function Aplicacao() {
                 }
               />
             )}
+            {activeTab === 'myDemands' &&
+              session?.role === 'citizen' &&
+              (myDemandsLoading ? (
+                <div className="page-container">
+                  <p>Carregando suas demandas…</p>
+                </div>
+              ) : myDemandsError ? (
+                <div className="page-container" role="alert">
+                  <p className="access-error">
+                    Não foi possível carregar suas demandas: {myDemandsError}
+                  </p>
+                </div>
+              ) : (
+                <ListaSolicitacoes
+                  demands={myDemands}
+                  minhas_demandas
+                  ao_abrir_solicitacao={setSelectedId}
+                  ao_iniciar_cadastro={() => setActiveTab('new')}
+                />
+              ))}
             {activeTab === 'new' &&
               (session?.role === 'citizen' ? (
                 <FormularioSolicitacao

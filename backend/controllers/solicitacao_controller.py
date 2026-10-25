@@ -1,5 +1,11 @@
 from flask import request, jsonify
-from services.solicitacao_service import listar_solicitacoes_service, buscar_solicitacao_pelo_id_service, buscar_solicitacao_pelo_Protocolo_service, update_solicitacao_service
+from services.solicitacao_service import (
+    listar_solicitacoes_service,
+    listar_solicitacoes_por_cidadao_service,
+    buscar_solicitacao_pelo_id_service,
+    buscar_solicitacao_pelo_Protocolo_service,
+    update_solicitacao_service,
+)
 
 def listar_solicitacoes_controller():
      try:
@@ -17,6 +23,27 @@ def listar_solicitacoes_controller():
                              'success': False,
                              'message': 'Houve um error durante a consulta de solicitações.'
                              }), 500
+
+def listar_minhas_solicitacoes_controller():
+     try:
+          ID_CIDADAO = request.user.get('ID_USER')
+          if not isinstance(ID_CIDADAO, int) or isinstance(ID_CIDADAO, bool):
+               return jsonify({
+                                'success': False,
+                                'message': 'O token não contém um ID de cidadão válido.'
+               }), 401
+
+          operacao = listar_solicitacoes_por_cidadao_service(ID_CIDADAO)
+          if not operacao['success']:
+               return jsonify(operacao), 500
+
+          return jsonify(operacao), 200
+     except Exception as error:
+          print(f"Erro durante a consulta das solicitações do cidadão: {error}")
+          return jsonify({
+               'success': False,
+               'message': 'Houve um erro ao consultar suas solicitações.'
+          }), 500
 
 def buscar_solicitacao_pelo_id_controller(ID_SOLICITACAO):
      try:

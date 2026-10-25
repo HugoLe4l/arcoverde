@@ -23,13 +23,6 @@ municipais.
 - Central do gestor para cadastrar atendentes e consultar servidores; usuários
   Admin também podem promover atendentes a Gestor.
 
-### Limitações conhecidas
-
-- A API atual não aceita anexos de imagem, prazos ou atribuição de um servidor
-  individual.
-- A API não oferece uma rota para filtrar solicitações pelo cidadão autenticado;
-  por isso, a lista exibida depende dos dados retornados pela API.
-
 ## Requisitos
 
 - Python 3.10 ou superior.

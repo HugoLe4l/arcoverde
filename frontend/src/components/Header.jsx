@@ -16,11 +16,15 @@ export function Cabecalho({
   const saudacao = primeiro_nome ? `Olá, ${primeiro_nome}` : 'Olá visitante';
   const link_demandas =
     tipo_usuario === 'citizen'
-      ? { id: 'demands', label: 'Minhas demandas' }
+      ? { id: 'demands', label: 'Demandas' }
       : tipo_usuario === 'server'
         ? { id: 'serverPortal', label: 'Portal do servidor' }
         : { id: 'demands', label: 'Demandas' };
-  const links_exibidos = [...links, link_demandas];
+  const links_exibidos = [
+    ...links,
+    link_demandas,
+    ...(tipo_usuario === 'citizen' ? [{ id: 'myDemands', label: 'Minhas demandas' }] : []),
+  ];
 
   function navegar_para(id) {
     definir_aba_ativa(id);

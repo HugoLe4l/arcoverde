@@ -67,6 +67,17 @@ no login correspondente.
 - **Erros comuns:** `401` sem token válido; `403` para token de outro tipo
   de usuário.
 
+### Listar solicitações do cidadão autenticado
+
+- **Método e rota:** `GET /cidadao/minhas-solicitacoes`
+- **Autenticação:** token de cidadão.
+- **Corpo:** nenhum. O ID do cidadão é obtido do token; não envie CPF nem ID
+  pela URL ou pelo corpo da requisição.
+- **Sucesso:** `200 OK`, com as solicitações do cidadão ordenadas da mais
+  recente para a mais antiga em `resultado`.
+- **Erros comuns:** `401` sem token válido; `403` para token de outro tipo
+  de usuário.
+
 ### Criar solicitação
 
 - **Método e rota:** `POST /cidadao/criar-solicitacao`
